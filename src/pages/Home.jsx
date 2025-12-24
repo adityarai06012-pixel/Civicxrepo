@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import translations from "../utils/lang";
 
 const Home = () => {
-  // === Replicates counter animation from script.js ===
+  // 🌐 Get selected language
+  const lang = localStorage.getItem("lang") || "en";
+  const t = translations[lang];
+
+  // === Counter animation (UNCHANGED) ===
   useEffect(() => {
     const counters = document.querySelectorAll(".stat-card .big-num");
     const totalIssues = parseInt(localStorage.getItem("totalIssues")) || 0;
@@ -34,42 +39,55 @@ const Home = () => {
       {/* ================= HERO SECTION ================= */}
       <section className="hero container">
         <div className="hero-left">
-          <span className="section-label">Real Impact</span>
-          <h1>Empowering citizens to report and resolve civic issues.</h1>
+          <span className="section-label">
+            {lang === "en" ? "Real Impact" : "वास्तविक प्रभाव"}
+          </span>
+
+          <h1>
+            {lang === "en"
+              ? "Empowering citizens to report and resolve civic issues."
+              : "नागरिकों को नागरिक समस्याओं की रिपोर्ट और समाधान के लिए सशक्त बनाना।"}
+          </h1>
 
           <p className="lead">
-            CivicX is a crowdsourced platform that lets people report problems
-            like potholes, broken streetlights, and garbage — track progress and
-            help your community improve with transparency and accountability.
+            {lang === "en"
+              ? "CivicX is a crowdsourced platform that lets people report problems like potholes, broken streetlights, and garbage — track progress and help your community improve with transparency and accountability."
+              : "CivicX एक क्राउडसोर्स प्लेटफॉर्म है जो लोगों को गड्ढों, खराब स्ट्रीटलाइट और कचरे जैसी समस्याओं की रिपोर्ट करने, प्रगति को ट्रैक करने और पारदर्शिता व जवाबदेही के साथ अपने समुदाय को बेहतर बनाने में मदद करता है।"}
           </p>
 
           <div className="hero-ctas">
             <Link className="btn btn-primary" to="/report">
-              Report an Issue
+              {t.reportBtn}
             </Link>
             <Link className="btn btn-outline" to="/about">
-              Learn More
+              {lang === "en" ? "Learn More" : "और जानें"}
             </Link>
           </div>
 
           <ul className="hero-stats">
             <li>
               <strong>2.5K+</strong>
-              <span>Issues Reported</span>
+              <span>
+                {lang === "en" ? "Issues Reported" : "रिपोर्ट की गई समस्याएँ"}
+              </span>
             </li>
             <li>
               <strong>1.8K+</strong>
-              <span>Resolved</span>
+              <span>{lang === "en" ? "Resolved" : "समाधान किया गया"}</span>
             </li>
             <li>
               <strong>98%</strong>
-              <span>Community Satisfaction</span>
+              <span>
+                {lang === "en"
+                  ? "Community Satisfaction"
+                  : "सामुदायिक संतुष्टि"}
+              </span>
             </li>
           </ul>
         </div>
 
         <div className="hero-right">
-          {/* Image path unchanged */}
+          {/* Image unchanged */}
           <img
             src="/images/image5.png"
             alt="Community reporting illustration"
@@ -78,69 +96,105 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= IMPACT / DASHBOARD ================= */}
+      {/* ================= IMPACT ================= */}
       <section className="impact container">
-        <div className="section-label">Real Impact</div>
-        <h2>Community Impact Dashboard</h2>
+        <div className="section-label">
+          {lang === "en" ? "Real Impact" : "वास्तविक प्रभाव"}
+        </div>
+
+        <h2>
+          {lang === "en"
+            ? "Community Impact Dashboard"
+            : "समुदाय प्रभाव डैशबोर्ड"}
+        </h2>
+
         <p className="muted">
-          See how CivicX is helping communities report, track and resolve issues.
+          {lang === "en"
+            ? "See how CivicX is helping communities report, track and resolve issues."
+            : "देखें कि CivicX समुदायों को समस्याओं की रिपोर्ट, ट्रैक और समाधान करने में कैसे मदद कर रहा है।"}
         </p>
 
         <div className="grid-4cards">
           <div className="card stat-card">
             <div className="card-icon">📊</div>
-            <h3>Total Issues</h3>
+            <h3>{lang === "en" ? "Total Issues" : "कुल समस्याएँ"}</h3>
             <div className="big-num">0</div>
-            <p className="muted small">total issues reported</p>
+            <p className="muted small">
+              {lang === "en"
+                ? "total issues reported"
+                : "कुल रिपोर्ट की गई समस्याएँ"}
+            </p>
           </div>
 
           <div className="card stat-card">
             <div className="card-icon">⏳</div>
-            <h3>Open Issues</h3>
+            <h3>{lang === "en" ? "Open Issues" : "खुली समस्याएँ"}</h3>
             <div className="big-num">0</div>
-            <p className="muted small">open issues reported</p>
+            <p className="muted small">
+              {lang === "en" ? "open issues reported" : "खुली समस्याएँ"}
+            </p>
           </div>
 
           <div className="card stat-card">
             <div className="card-icon">🔧</div>
-            <h3>In Progress</h3>
+            <h3>{lang === "en" ? "In Progress" : "प्रगति में"}</h3>
             <div className="big-num">0</div>
-            <p className="muted small">in progress</p>
+            <p className="muted small">
+              {lang === "en" ? "in progress" : "प्रगति में"}
+            </p>
           </div>
 
           <div className="card stat-card">
             <div className="card-icon">✅</div>
-            <h3>Resolved</h3>
+            <h3>{lang === "en" ? "Resolved" : "समाधान किया गया"}</h3>
             <div className="big-num">0</div>
-            <p className="muted small">resolved reported</p>
+            <p className="muted small">
+              {lang === "en" ? "resolved reported" : "समाधान की गई समस्याएँ"}
+            </p>
           </div>
         </div>
       </section>
 
       {/* ================= FEATURES ================= */}
       <section className="features container">
-        <h2>Why CivicX</h2>
-        <p className="muted">Built with community and transparency in mind.</p>
+        <h2>{lang === "en" ? "Why CivicX" : "CivicX क्यों"}</h2>
+        <p className="muted">
+          {lang === "en"
+            ? "Built with community and transparency in mind."
+            : "समुदाय और पारदर्शिता को ध्यान में रखकर बनाया गया।"}
+        </p>
 
         <ul className="feature-list">
           <li>
-            <strong>Transparency</strong> — Track every issue from report to
-            resolution.
+            <strong>{lang === "en" ? "Transparency" : "पारदर्शिता"}</strong> —
+            {lang === "en"
+              ? " Track every issue from report to resolution."
+              : " रिपोर्ट से समाधान तक हर समस्या को ट्रैक करें।"}
           </li>
           <li>
-            <strong>AI Prioritization</strong> — Automated prioritization of
-            urgent issues.
+            <strong>AI Prioritization</strong> —
+            {lang === "en"
+              ? " Automated prioritization of urgent issues."
+              : " तत्काल समस्याओं की स्वचालित प्राथमिकता।"}
           </li>
           <li>
-            <strong>Rewards</strong> — Recognition & incentives for active
-            citizens.
+            <strong>{lang === "en" ? "Rewards" : "पुरस्कार"}</strong> —
+            {lang === "en"
+              ? " Recognition & incentives for active citizens."
+              : " सक्रिय नागरिकों के लिए पहचान और प्रोत्साहन।"}
           </li>
           <li>
-            <strong>Social Sharing</strong> — Raise awareness by sharing reports.
+            <strong>{lang === "en" ? "Social Sharing" : "सामाजिक साझाकरण"}</strong>
+            —
+            {lang === "en"
+              ? " Raise awareness by sharing reports."
+              : " रिपोर्ट साझा करके जागरूकता बढ़ाएँ।"}
           </li>
           <li>
-            <strong>Analytics</strong> — Dashboard for community and
-            authorities.
+            <strong>{lang === "en" ? "Analytics" : "विश्लेषण"}</strong> —
+            {lang === "en"
+              ? " Dashboard for community and authorities."
+              : " समुदाय और अधिकारियों के लिए डैशबोर्ड।"}
           </li>
         </ul>
       </section>

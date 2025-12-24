@@ -1,6 +1,32 @@
 import { NavLink, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import translations from "../utils/lang";
 
 const Navbar = () => {
+  const [lang, setLang] = useState("en");
+
+  // Load saved language
+ useEffect(() => {
+  const savedLang = localStorage.getItem("lang");
+
+  if (!savedLang) {
+    // 👈 First visit: force English
+    localStorage.setItem("lang", "en");
+    setLang("en");
+  } else {
+    setLang(savedLang);
+  }
+}, []);
+
+  const toggleLanguage = () => {
+    const newLang = lang === "en" ? "hi" : "en";
+    setLang(newLang);
+    localStorage.setItem("lang", newLang);
+    window.location.reload(); // simple & safe
+  };
+
+  const t = translations[lang];
+
   return (
     <header className="navbar">
       <div className="nav-inner container">
@@ -31,20 +57,20 @@ const Navbar = () => {
           <ul className="nav-links">
             <li>
               <NavLink to="/" end>
-                Home
+                {t.home}
               </NavLink>
             </li>
             <li>
-              <NavLink to="/report">Report Issues</NavLink>
+              <NavLink to="/report">{t.reportIssues}</NavLink>
             </li>
             <li>
-              <NavLink to="/browse">Browse Issues</NavLink>
+              <NavLink to="/browse">{t.browseIssues}</NavLink>
             </li>
             <li>
-              <NavLink to="/about">About Us</NavLink>
+              <NavLink to="/about">{t.about}</NavLink>
             </li>
             <li>
-              <NavLink to="/contact">Contact</NavLink>
+              <NavLink to="/contact">{t.contact}</NavLink>
             </li>
           </ul>
         </nav>
@@ -52,11 +78,20 @@ const Navbar = () => {
         {/* Actions */}
         <div className="nav-actions">
           <Link className="btn btn-outline" to="/report">
-            Report an Issue
+            {t.reportBtn}
           </Link>
           <Link className="btn btn-primary" to="/signup">
-            Sign Up
+            {t.signup}
           </Link>
+
+          {/* 🌐 Language Toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="btn btn-outline"
+            style={{ marginLeft: "10px" }}
+          >
+            {t.toggle}
+          </button>
         </div>
       </div>
     </header>
