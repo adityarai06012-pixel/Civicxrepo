@@ -4,8 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-/* Scroll reset (IMPORTANT) */
-import ScrollToTop from "./components/ScrollToTop";
+
 
 /* Pages */
 import Home from "./pages/Home";
@@ -19,8 +18,7 @@ import Contact from "./pages/Contact";
 function App() {
   return (
     <>
-      {/* 🔑 Forces page to start from top on every route */}
-      <ScrollToTop />
+      
 
       <Navbar />
 
