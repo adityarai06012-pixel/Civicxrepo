@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Report = () => {
@@ -8,10 +8,39 @@ const Report = () => {
   const [issue, setIssue] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
+  // NEW: GPS coordinates (stored silently)
+  const [coords, setCoords] = useState(null);
+
+  /* ===============================
+     AUTO GPS LOCATION (FRONTEND)
+     =============================== */
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.warn("Geolocation not supported");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+
+        setCoords({ latitude, longitude });
+
+        // Auto-fill readable location (user can edit)
+        setLocation(
+          `Lat: ${latitude.toFixed(5)}, Lng: ${longitude.toFixed(5)}`
+        );
+      },
+      (error) => {
+        console.warn("Location permission denied");
+      }
+    );
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // === Same validation as script.js ===
+    // === SAME validation as before ===
     if (!name || !email || !location || !issue) {
       alert("⚠️ Please fill all required fields before submitting.");
       return;
@@ -31,6 +60,11 @@ const Report = () => {
         email,
         location,
         issue,
+
+        // NEW (safe additions)
+        latitude: coords?.latitude || null,
+        longitude: coords?.longitude || null,
+
         image: imageFile ? reader.result : "",
         date: new Date().toLocaleDateString(),
       };
@@ -49,12 +83,13 @@ const Report = () => {
       setLocation("");
       setIssue("");
       setImageFile(null);
+      setCoords(null);
     };
 
     if (imageFile) {
       reader.readAsDataURL(imageFile);
     } else {
-      reader.onload(); // trigger without image
+      reader.onload();
     }
   };
 
@@ -98,11 +133,14 @@ const Report = () => {
               <input
                 id="location"
                 type="text"
-                placeholder="Street, area, city"
+                placeholder="Fetching location..."
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
+              <small className="muted small">
+                Auto-filled using GPS (you can edit)
+              </small>
             </div>
 
             <div className="form-row">
@@ -118,15 +156,16 @@ const Report = () => {
             </div>
 
             <div className="form-row">
-              <label htmlFor="imageUpload">Upload Photo</label>
+              <label htmlFor="imageUpload">Upload Photo / Capture</label>
               <input
                 type="file"
                 id="imageUpload"
                 accept="image/*"
+                capture="environment"
                 onChange={(e) => setImageFile(e.target.files[0])}
               />
               <small className="muted small">
-                Optional but very helpful
+                One-tap camera on mobile devices
               </small>
             </div>
 
