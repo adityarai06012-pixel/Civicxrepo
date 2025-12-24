@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import translations from "../utils/lang";
+import IssueMap from "../components/IssueMap";
 
 const Browse = () => {
   // 🌐 Language
@@ -9,17 +10,13 @@ const Browse = () => {
   const [issues, setIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null);
 
-  // ============================
   // Load issues from LocalStorage
-  // ============================
   useEffect(() => {
     const storedIssues = JSON.parse(localStorage.getItem("issues")) || [];
     setIssues(storedIssues);
   }, []);
 
-  // ============================
   // Delete all issues
-  // ============================
   const handleDeleteAll = () => {
     if (
       !window.confirm(
@@ -42,9 +39,7 @@ const Browse = () => {
     );
   };
 
-  // ============================
   // Modal handlers
-  // ============================
   const openModal = (issue) => {
     setSelectedIssue(issue);
   };
@@ -55,7 +50,7 @@ const Browse = () => {
 
   return (
     <main>
-      {/* ================= Browse Static Issues ================= */}
+      {/* ================= STATIC SAMPLE ISSUES ================= */}
       <section className="container">
         <div className="center">
           <h1>
@@ -65,13 +60,12 @@ const Browse = () => {
           </h1>
           <p className="muted">
             {lang === "en"
-              ? "Filter and view recent issues reported by community members."
-              : "समुदाय के सदस्यों द्वारा रिपोर्ट की गई हालिया समस्याएँ देखें।"}
+              ? "Explore civic issues reported by the community."
+              : "समुदाय द्वारा रिपोर्ट की गई नागरिक समस्याएँ देखें।"}
           </p>
         </div>
 
         <div className="issues-grid">
-          {/* Static cards (unchanged images & structure) */}
           <article className="issue-card">
             <div className="card-media">
               <img src="/images/image1.png" alt="Garbage" />
@@ -80,9 +74,7 @@ const Browse = () => {
               </span>
             </div>
             <div className="card-body">
-              <h3>
-                {lang === "en" ? "Garbage Overflow" : "कचरे की समस्या"}
-              </h3>
+              <h3>{lang === "en" ? "Garbage Overflow" : "कचरे की समस्या"}</h3>
               <p className="muted small">
                 {lang === "en"
                   ? "Garbage not collected at Main Street."
@@ -117,9 +109,7 @@ const Browse = () => {
             </div>
             <div className="card-body">
               <h3>
-                {lang === "en"
-                  ? "Broken Streetlight"
-                  : "खराब स्ट्रीटलाइट"}
+                {lang === "en" ? "Broken Streetlight" : "खराब स्ट्रीटलाइट"}
               </h3>
               <p className="muted small">
                 {lang === "en"
@@ -128,29 +118,28 @@ const Browse = () => {
               </p>
             </div>
           </article>
-
-          <article className="issue-card">
-            <div className="card-media">
-              <img src="/images/image4.png" alt="Water leak" />
-              <span className="badge pending">
-                {lang === "en" ? "Pending" : "लंबित"}
-              </span>
-            </div>
-            <div className="card-body">
-              <h3>
-                {lang === "en" ? "Water Leakage" : "पानी का रिसाव"}
-              </h3>
-              <p className="muted small">
-                {lang === "en"
-                  ? "Leaking pipeline near market area."
-                  : "बाजार क्षेत्र के पास पाइपलाइन से पानी रिस रहा है।"}
-              </p>
-            </div>
-          </article>
         </div>
       </section>
 
-      {/* ================= Dynamic Issues ================= */}
+      {/* ================= MAP DASHBOARD ================= */}
+      <section className="container">
+        <div className="center">
+          <h1>
+            {lang === "en"
+              ? "📍 Issue Map Dashboard"
+              : "📍 समस्या मानचित्र डैशबोर्ड"}
+          </h1>
+          <p className="muted">
+            {lang === "en"
+              ? "View all reported issues plotted on the map."
+              : "मानचित्र पर सभी रिपोर्ट की गई समस्याएँ देखें।"}
+          </p>
+        </div>
+
+        <IssueMap issues={issues} />
+      </section>
+
+      {/* ================= USER REPORTED ISSUES ================= */}
       <section className="container">
         <div className="center">
           <h1>
@@ -160,8 +149,8 @@ const Browse = () => {
           </h1>
           <p className="muted">
             {lang === "en"
-              ? "View and manage all issues reported by you."
-              : "आपके द्वारा रिपोर्ट की गई सभी समस्याएँ देखें और प्रबंधित करें।"}
+              ? "Issues reported by you."
+              : "आपके द्वारा रिपोर्ट की गई समस्याएँ।"}
           </p>
         </div>
 
@@ -184,10 +173,10 @@ const Browse = () => {
 
           {issues.map((issue, index) => (
             <article
-              className="issue-card"
               key={index}
-              style={{ cursor: "pointer" }}
+              className="issue-card"
               onClick={() => openModal(issue)}
+              style={{ cursor: "pointer" }}
             >
               <div className="card-media">
                 <img
@@ -213,7 +202,9 @@ const Browse = () => {
                   {issue.name}
                 </p>
                 <p className="muted small">
-                  <strong>{lang === "en" ? "Date:" : "तारीख:"}</strong>{" "}
+                  <strong>
+                    {lang === "en" ? "Date:" : "तारीख:"}
+                  </strong>{" "}
                   {issue.date}
                 </p>
               </div>
@@ -222,7 +213,7 @@ const Browse = () => {
         </div>
       </section>
 
-      {/* ================= Modal ================= */}
+      {/* ================= MODAL ================= */}
       {selectedIssue && (
         <div className="modal show" onClick={closeModal}>
           <div
@@ -244,9 +235,7 @@ const Browse = () => {
             )}
 
             <p>
-              <strong>
-                {lang === "en" ? "Location:" : "स्थान:"}
-              </strong>{" "}
+              <strong>{lang === "en" ? "Location:" : "स्थान:"}</strong>{" "}
               {selectedIssue.location}
             </p>
             <p>
@@ -262,15 +251,6 @@ const Browse = () => {
               <strong>{lang === "en" ? "Date:" : "तारीख:"}</strong>{" "}
               {selectedIssue.date}
             </p>
-
-            <hr />
-
-            <p>
-              <strong>
-                {lang === "en" ? "Description:" : "विवरण:"}
-              </strong>
-            </p>
-            <p>{selectedIssue.issue}</p>
           </div>
         </div>
       )}
